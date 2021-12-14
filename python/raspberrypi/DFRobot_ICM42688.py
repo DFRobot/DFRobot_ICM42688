@@ -1301,8 +1301,8 @@ class DFRobot_ICM42688_SPI(DFRobot_ICM42688):
       @param reg register address
       @return read data
     '''
-     GPIO.output(self.__cs, GPIO.LOW)
-     self.__spi.writebytes([reg | 0x80])
-     data = self.__spi.readbytes(1)
-     GPIO.output(self.__cs, GPIO.HIGH)
-     return  data[0]
+    GPIO.output(self.__cs, GPIO.LOW)
+    self.__spi.writebytes([reg | 0x80])
+    data = self.__spi.readbytes(1)
+    GPIO.output(self.__cs, GPIO.HIGH)
+    return  data[0]

@@ -38,7 +38,7 @@ def setup():
     time.sleep(1)
     ret = ICM42688.begin()
 
-  print("ICM43688 begin success!!!")
+  print("ICM42688 begin success!!!")
   '''
     Set ODR and Full-scale range of gyroscope or accelerometer
     who  GYRO/ACCEL/ALL

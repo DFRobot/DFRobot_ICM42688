@@ -48,6 +48,26 @@ python get_gyro_accel_temp_data.py
       @retval ERR_IC_VERSION 读取的传感器ID有误
     '''
 
+  def get_all_measure_data(self):
+    '''!
+      @brief Obtain all measurement data
+      @n     Get measured temperature
+      @n     Get accelerometer value on X-axis
+      @n     Get accelerometer value on Y-axis
+      @n     Get accelerometer value on Z-axis
+      @n     Get gyroscope value on X-axis
+      @n     Get gyroscope value on Y-axis
+      @n     Get gyroscope value on Z-axis
+      @return a value list, content is as follows:
+      @n      Temperature value, unit: ℃
+      @n      X-axis accelerometer value, unit: mg
+      @n      Y-axis accelerometer value, unit: mg
+      @n      Z-axis accelerometer value, unit: mg
+      @n      X-axis gyroscope value, unit: dps
+      @n      Y-axis gyroscope value, unit: dps
+      @n      Z-axis gyroscope value, unit: dps
+    '''
+
   def get_temperature(self):
     '''!
       @brief   @brief 获取测量温度值

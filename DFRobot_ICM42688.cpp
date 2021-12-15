@@ -794,7 +794,7 @@ void DFRobot_ICM42688_SPI::writeReg(uint8_t reg, void* pBuf, size_t size)
   }
   delay(1);
   uint8_t * _pBuf = (uint8_t *)pBuf;
-  _pSpi->beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));
+  _pSpi->beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
   digitalWrite(_csPin,0);
   _pSpi->transfer(reg);
   while(size--) {
@@ -812,7 +812,7 @@ uint8_t DFRobot_ICM42688_SPI::readReg(uint8_t reg, void* pBuf, size_t size)
   }
   uint8_t * _pBuf = (uint8_t *)pBuf;
   size_t count = 0;
-  _pSpi->beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));
+  _pSpi->beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
   digitalWrite(_csPin,0);
   _pSpi->transfer(reg | 0x80);
   while(size--) {

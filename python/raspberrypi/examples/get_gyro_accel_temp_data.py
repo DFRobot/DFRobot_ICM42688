@@ -37,7 +37,7 @@ def setup():
     time.sleep(1)
     ret = ICM42688.begin()
 
-  print("ICM43688 begin success!!!")
+  print("ICM42688 begin success!!!")
   '''
     Set ODR and Full-scale range of gyroscope or accelerometer
     who  GYRO/ACCEL/ALL
@@ -90,7 +90,23 @@ def setup():
   ICM42688.start_temp_measure()
 
 def loop():
-  #Get temperature, accelerometer and gyroscope data
+  '''
+    Get temperature, accelerometer and gyroscope data
+    Two methods of data acquisition:
+    Obtain all measurement data at one time, which can effectively shorten communication time
+    Single measurement data acquisition, only get the data you need
+  '''
+  measure_data = ICM42688.get_all_measure_data()
+  print("===========================================")
+  print("Temperature: = %f C"%(measure_data[0]))
+  print("Accel_X: = %f mg"%(measure_data[1]))
+  print("Accel_Y: = %f mg"%(measure_data[2]))
+  print("Accel_Z: = %f mg"%(measure_data[3]))
+  print("Gyro_X: = %f dps"%(measure_data[4]))
+  print("Gyro_Y: = %f dps"%(measure_data[5]))
+  print("Gyro_Z: = %f dps"%(measure_data[6]))
+  time.sleep(1)
+
   temp_data= ICM42688.get_temperature()
   accel_data_x = ICM42688.get_accel_x()
   accel_data_y= ICM42688.get_accel_y()

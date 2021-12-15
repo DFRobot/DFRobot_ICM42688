@@ -728,9 +728,48 @@ class DFRobot_ICM42688(object):
     time.sleep(0.001)
     return self.ERR_OK
 
+  def get_all_measure_data(self):
+    '''!
+      @brief Obtain all measurement data
+      @n     Get measured temperature
+      @n     Get accelerometer value on X-axis
+      @n     Get accelerometer value on Y-axis
+      @n     Get accelerometer value on Z-axis
+      @n     Get gyroscope value on X-axis
+      @n     Get gyroscope value on Y-axis
+      @n     Get gyroscope value on Z-axis
+      @return a value list, content is as follows:
+      @n      Temperature value, unit: ℃
+      @n      X-axis accelerometer value, unit: mg
+      @n      Y-axis accelerometer value, unit: mg
+      @n      Z-axis accelerometer value, unit: mg
+      @n      X-axis gyroscope value, unit: dps
+      @n      Y-axis gyroscope value, unit: dps
+      @n      Z-axis gyroscope value, unit: dps
+    '''
+    value = [0] * 7
+    if(self.FIFO_mode):
+      value[0] = self.__temp/2.07 + 25
+      value[1] = self.__accel_x * self.__accel_range
+      value[2] = self.__accel_y * self.__accel_range
+      value[3] = self.__accel_z * self.__accel_range
+      value[4] = self.__gyro_x * self.__gyro_range
+      value[5] = self.__gyro_y * self.__gyro_range
+      value[6] = self.__gyro_z * self.__gyro_range
+    else:
+      data = self._read_multi_reg(ICM42688_TEMP_DATA1, 14)
+      value[0] = (np.int16((data[0])*256 + data[1]))/132.48 + 25
+      value[1] = np.int16((data[2])*256 + data[3]) * self.__accel_range
+      value[2] = np.int16((data[4])*256 + data[5]) * self.__accel_range
+      value[3] = np.int16((data[6])*256 + data[7]) * self.__accel_range
+      value[4] = np.int16((data[8])*256 + data[9]) * self.__gyro_range
+      value[5] = np.int16((data[10])*256 + data[11]) * self.__gyro_range
+      value[6] = np.int16((data[12])*256 + data[13]) * self.__gyro_range
+    return value
+
   def get_temperature(self):
     '''!
-      @brief   @brief Get measured temperature
+      @brief Get measured temperature
       @return Temperature value, unit: ℃
     '''
     value = 0.0
@@ -1265,6 +1304,16 @@ class DFRobot_ICM42688_I2C(DFRobot_ICM42688):
     rslt = self.i2cbus.read_byte(self.i2c_addr)
     return rslt
 
+  def _read_multi_reg(self, reg, length):
+    '''!
+      @brief read the data from the register
+      @param reg register address
+      @param length length of data to be read
+      @return read data list
+    '''
+    return self.i2cbus.read_i2c_block_data(self.i2c_addr, reg, length)
+
+
 class DFRobot_ICM42688_SPI(DFRobot_ICM42688): 
   def __init__(self ,cs, bus = 0, dev = 0,speed = 10000000):
     super(DFRobot_ICM42688_SPI, self).__init__()
@@ -1306,3 +1355,16 @@ class DFRobot_ICM42688_SPI(DFRobot_ICM42688):
     data = self.__spi.readbytes(1)
     GPIO.output(self.__cs, GPIO.HIGH)
     return  data[0]
+
+  def _read_multi_reg(self, reg, length):
+    '''!
+      @brief read the data from the register
+      @param reg register address
+      @param length length of data to be read 
+      @return read data list
+    '''
+    GPIO.output(self.__cs, GPIO.LOW)
+    self.__spi.writebytes([reg | 0x80])
+    rslt = self.__spi.readbytes(length)
+    GPIO.output(self.__cs, GPIO.HIGH)
+    return rslt

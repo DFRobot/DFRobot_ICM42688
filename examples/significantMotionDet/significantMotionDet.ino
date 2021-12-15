@@ -31,7 +31,7 @@ void setup() {
       Serial.println("Chip versions do not match");
     delay(1000);
   }
-  Serial.println("ICM43688 begin success!!!");
+  Serial.println("ICM42688 begin success!!!");
   #if defined(ESP32) || defined(ESP8266)
   //Use D6 pin as interrupt pin by default, or select other non-conflicting pins as external interrupt pin
   attachInterrupt(digitalPinToInterrupt(D9)/*Query the interrupt number of the D9 pin*/,interEvent,FALLING);

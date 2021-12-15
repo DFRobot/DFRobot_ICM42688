@@ -25,7 +25,7 @@ void setup() {
       Serial.println("Chip versions do not match");
     delay(1000);
   }
-  Serial.println("ICM43688 begin success!!!");
+  Serial.println("ICM42688 begin success!!!");
   /**
    * Set ODR and Full-scale range of gyroscope or accelerometer
    * who  GYRO/ACCEL/ALL

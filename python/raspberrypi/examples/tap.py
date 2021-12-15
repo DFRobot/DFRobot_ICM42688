@@ -48,7 +48,7 @@ def setup():
     ret = ICM42688.begin()
 
   #Configure IO interface interrupt to be triggered by falling edge
-  print("ICM43688 begin success!!!")
+  print("ICM42688 begin success!!!")
   gpio_int = 26
   GPIO.setmode(GPIO.BCM)
   GPIO.setup(gpio_int, GPIO.IN)
